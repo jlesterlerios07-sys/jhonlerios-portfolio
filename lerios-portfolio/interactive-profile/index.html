@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Profile</title>
+    <link rel="stylesheet" href="main.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+
+    <div class="box-info" id="infoBox">
+        <h1 id="pageTitle">Welcome Students</h1>
+        <h6>Welcome to my Interactive Profile</h6>
+        <br>
+        <h3 style="text-align: start;">Student Information</h3>
+        <p style="text-align: start;">Name: Lerios, John Lester</p>
+        <p style="text-align: start;">Course: BSIT31C</p>
+        <p style="text-align: start;">Year Level: 3rd Year</p>
+    </div>
+
+    <div class="box-actions">
+        <button id="switchTitleBtn">Change Title</button>
+        <button id="concealBtn">Hide Profile</button>
+        <button id="revealBtn">Show Profile</button>
+
+        <p id="noticeLine">Waiting...</p>
+    </div>
+
+    <div class="box-body">
+        <h6 style="text-align: start;">Choose Your Course</h6>
+        <select name="" id="programPicker">
+            <option value="No Course is Selected">Select Course</option>
+            <option value="Bachelor of Science in Information Technology">BSIT</option>
+            <option value="Bachelor of Science in Computer Science">BSCS</option>
+            <option value="Bachelor of Science in Hospitality Management">BSHM</option>
+        </select>
+        <p id="programResult" class="program-result">No Course is Selected</p>
+        <br><br>
+
+        <h1 style="text-align: start;">Student List</h1>
+        <h6 style="text-align: start;">Registered Students</h6>
+
+        <center>
+        <table border="3" id="classTable">
+            <tr>
+                <th>Subject</th>
+                <th>Time</th>
+                <th>Unit</th>
+                <th>Year Level</th>
+            </tr>
+            <tr>
+                <td>asdasd</td>
+                <td>asdasd</td>
+                <td>asdasd</td>
+                <td>asdasd</td>
+            </tr>
+            <tr>
+                <td>asdasd</td>
+                <td>asdasd</td>
+                <td>asdasd</td>
+                <td>asdasd</td>
+            </tr>
+            <tr>
+                <td>asdasd</td>
+                <td>asdasd</td>
+                <td>asdasd</td>
+                <td>asdasd</td>
+            </tr>
+            <tr>
+                <td>asdasd</td>
+                <td>asdasd</td>
+                <td>asdasd</td>
+                <td>asdasd</td>
+            </tr>
+        </table>
+        <h6 style="text-align: start;">End of Student List</h6>
+        <br>
+        <button id="stripeOddBtn">Apply Odd Rows</button>
+        <button id="stripeEvenBtn">Apply Even Rows</button>
+
+        <p id="tableNotice">Choose an Action for the Table</p>
+        </center>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

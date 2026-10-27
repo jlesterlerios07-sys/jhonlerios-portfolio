@@ -1,0 +1,389 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Lerios Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap">
+<style>
+/* Layout: one big haunted terminal window. Four tabs across the top switch the view (home, about, projects, contact) instead of one long scroll. Single committed dark look. */
+:root {
+  color-scheme: dark;
+  --void: #060f0a;
+  --panel: #0c1a12;
+  --panel-2: #12261a;
+  --line: #1f4030;
+  --slime: #7dff9a;
+  --moss: #46965c;
+  --pumpkin: #ff8a1f;
+  --blood: #ff4d3d;
+  --bone: #e6f2e4;
+  --display: "VT323", "Courier New", monospace;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--bone);
+  font: 15px/1.7 var(--mono);
+  padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background-image:
+    radial-gradient(700px 420px at 12% 0%, rgba(255,138,31,.10), transparent 60%),
+    radial-gradient(700px 500px at 100% 100%, rgba(125,255,154,.08), transparent 60%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+[hidden] { display: none !important; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--pumpkin); outline-offset: 3px; }
+
+.win {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px #000, 0 30px 80px rgba(0,0,0,.6), 0 0 60px rgba(125,255,154,.06);
+  overflow: hidden;
+}
+.win::after { /* scanlines */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px);
+  mix-blend-mode: multiply;
+}
+.web { position: absolute; top: 0; right: 0; width: 150px; height: 150px; opacity: .5; pointer-events: none; }
+
+.bar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #08130d; border-bottom: 1px solid var(--line); }
+.dots { display: flex; gap: 7px; }
+.dots i { width: 11px; height: 11px; border-radius: 50%; background: var(--blood); }
+.dots i:nth-child(2) { background: var(--pumpkin); }
+.dots i:nth-child(3) { background: var(--slime); }
+.bar span { font-size: .78rem; color: var(--moss); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.tabs { display: flex; gap: 2px; padding: 10px 12px 0; background: #08130d; border-bottom: 1px solid var(--line); overflow-x: auto; }
+.tabs a {
+  text-decoration: none; font-size: .82rem; padding: 10px 18px; color: var(--moss);
+  border: 1px solid transparent; border-bottom: 0; border-radius: 8px 8px 0 0; white-space: nowrap;
+}
+.tabs a:hover { color: var(--slime); }
+.tabs a[aria-current="page"] { background: var(--panel); color: var(--pumpkin); border-color: var(--line); position: relative; top: 1px; }
+
+.view { padding: 38px clamp(18px, 4vw, 44px) 44px; min-height: 440px; }
+.ps { color: var(--moss); margin: 0 0 6px; font-size: .85rem; }
+.ps::before { content: "$ "; color: var(--pumpkin); }
+h1, h2 { font: 400 clamp(2.6rem, 8vw, 4.6rem)/.95 var(--display); margin: 0 0 24px; letter-spacing: .02em; color: var(--slime); text-shadow: 0 0 14px rgba(125,255,154,.45); text-wrap: balance; }
+h2 { font-size: clamp(2.2rem, 6vw, 3.2rem); margin-bottom: 20px; }
+h1 em, h2 em { font-style: normal; color: var(--pumpkin); text-shadow: 0 0 14px rgba(255,138,31,.5); animation: candle 5s infinite; }
+p { margin: 0 0 1em; max-width: 64ch; }
+.role { font-size: 1.15rem; margin-bottom: 22px; }
+.role b { color: var(--pumpkin); font-weight: 700; }
+.caret { display: inline-block; width: 9px; height: 1.1em; background: var(--slime); vertical-align: -0.2em; margin-left: 3px; animation: blink 1s steps(2) infinite; }
+
+.home-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 36px; align-items: center; }
+.cmds { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.cmd {
+  font: 700 .84rem/1 var(--mono); text-decoration: none; padding: 14px 18px; background: transparent; cursor: pointer;
+  color: var(--slime); border: 1px solid var(--slime); border-radius: 4px; transition: background .15s, color .15s;
+}
+.cmd:hover { background: var(--slime); color: var(--void); }
+.cmd.hot { color: var(--pumpkin); border-color: var(--pumpkin); }
+.cmd.hot:hover { background: var(--pumpkin); color: var(--void); }
+
+.frame { position: relative; padding: 14px; border: 1px dashed var(--line); max-width: 300px; justify-self: center; width: 100%; }
+.frame::before, .frame::after { content: ""; position: absolute; width: 22px; height: 22px; border: 2px solid var(--pumpkin); }
+.frame::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+.frame::after { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+.photo { aspect-ratio: 1; background: radial-gradient(circle at 50% 38%, #1d3d2a, #0a1710); display: grid; place-items: center; }
+.photo svg { width: 78%; height: auto; filter: drop-shadow(0 0 18px rgba(255,138,31,.5)); animation: candle 6s infinite; }
+.frame small { display: block; margin-top: 10px; text-align: center; color: var(--moss); font-size: .72rem; }
+
+/* about */
+.cols { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 36px; align-items: start; }
+.ls { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: .9rem; }
+.ls td { padding: 8px 0; border-bottom: 1px dashed var(--line); }
+.ls td:first-child { color: var(--moss); }
+.ls td:last-child { text-align: right; color: var(--pumpkin); font-weight: 700; font-variant-numeric: tabular-nums; }
+.skill { margin-bottom: 18px; }
+.skill .top { display: flex; justify-content: space-between; font-size: .82rem; margin-bottom: 6px; }
+.skill .top span:last-child { color: var(--pumpkin); font-variant-numeric: tabular-nums; }
+.track { position: relative; height: 16px; background: #08130d; border: 1px solid var(--line); }
+.track i { position: absolute; inset: 0 auto 0 0; width: var(--w); background: linear-gradient(90deg, var(--moss), var(--slime)); animation: fill 1.2s ease-out both; }
+.track::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 9px, #08130d 9px 12px); }
+.note { color: var(--moss); font-size: .8rem; }
+
+/* projects */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 22px; }
+.chip { font: 500 .8rem/1 var(--mono); padding: 10px 14px; background: transparent; color: var(--moss); border: 1px solid var(--line); cursor: pointer; border-radius: 4px; }
+.chip[aria-pressed="true"] { color: var(--void); background: var(--pumpkin); border-color: var(--pumpkin); }
+.list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.proj { border: 1px solid var(--line); background: var(--panel-2); padding: 22px; display: flex; flex-direction: column; gap: 10px; min-width: 0; transition: border-color .2s, box-shadow .2s; }
+.proj:hover { border-color: var(--pumpkin); box-shadow: 0 0 24px rgba(255,138,31,.12); }
+.path { font-size: .74rem; color: var(--moss); overflow-wrap: anywhere; }
+.proj h3 { font: 400 2rem/1 var(--display); margin: 0; color: var(--bone); }
+.st { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--pumpkin); }
+.st.soon { color: var(--moss); }
+.proj p { margin: 0; font-size: .9rem; color: #c5d9c4; }
+.tg { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 4px; }
+.tg span { font-size: .72rem; padding: 4px 8px; border: 1px solid var(--line); color: var(--slime); }
+.proj .cmd { align-self: flex-start; padding: 11px 14px; font-size: .76rem; }
+.proj.soon { border-style: dashed; background: transparent; }
+.proj.soon:hover { border-color: var(--line); box-shadow: none; }
+
+/* contact */
+.mailbox { border: 1px solid var(--line); background: var(--panel-2); padding: 26px; max-width: 620px; }
+.addr { display: block; font: 700 clamp(1rem, 3.8vw, 1.35rem)/1.3 var(--mono); color: var(--pumpkin); overflow-wrap: anywhere; margin: 6px 0 20px; user-select: all; }
+
+.status { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; padding: 10px 16px; background: #08130d; border-top: 1px solid var(--line); font-size: .72rem; color: var(--moss); }
+.status b { color: var(--slime); font-weight: 500; }
+
+.veil { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; background: rgba(2,8,5,.82);
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.dlg { background: var(--panel); border: 1px solid var(--pumpkin); padding: 26px; max-width: 480px; width: 100%; max-height: 100%; overflow: auto; }
+.dlg h3 { font: 400 2.2rem/1 var(--display); margin: 0 0 12px; color: var(--slime); }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 30;
+  background: var(--pumpkin); color: var(--void); font: 700 .8rem/1 var(--mono); padding: 12px 16px; }
+
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes candle { 0%, 100% { opacity: 1; } 42% { opacity: 1; } 44% { opacity: .78; } 47% { opacity: 1; } 70% { opacity: .9; } }
+@keyframes fill { from { width: 0; } }
+
+@media (max-width: 760px) {
+  .home-grid, .cols { grid-template-columns: minmax(0, 1fr); }
+  .list { grid-template-columns: minmax(0, 1fr); }
+  .view { min-height: 0; padding-top: 28px; }
+  .frame { max-width: 240px; }
+  .web { width: 100px; height: 100px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="win">
+  <svg class="web" viewBox="0 0 150 150" aria-hidden="true" fill="none" stroke="#7dff9a" stroke-width="1">
+    <path d="M150 0L0 0M150 0L150 150M150 0L40 150M150 0L0 90M150 0L100 150M150 0L0 40"/>
+    <path d="M118 0Q110 40 150 32M82 0Q70 62 150 62M44 0Q36 90 150 96M10 0Q6 120 150 130"/>
+  </svg>
+
+  <header class="bar">
+    <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    <span>lester@lerios: ~/portfolio</span>
+  </header>
+
+  <nav class="tabs" aria-label="Sections">
+    <a href="#home" data-tab="home">home.sh</a>
+    <a href="#about" data-tab="about">about.txt</a>
+    <a href="#projects" data-tab="projects">projects/</a>
+    <a href="#contact" data-tab="contact">contact.md</a>
+  </nav>
+
+  <!-- HOME -->
+  <section class="view" id="v-home">
+    <div class="home-grid">
+      <div>
+        <p class="ps">whoami</p>
+        <h1>John Lester <em>Lerios</em></h1>
+        <p class="ps">cat role.txt</p>
+        <p class="role">I'm a <b id="typed">web developer</b><span class="caret" aria-hidden="true"></span></p>
+        <p class="ps">cat welcome.txt</p>
+        <p>Welcome to my portfolio. I like building clean, useful websites and learning something new with every project. Poke around, nothing here bites.</p>
+        <div class="cmds">
+          <a class="cmd" href="#projects">./projects.sh</a>
+          <a class="cmd hot" href="#contact">./contact.sh</a>
+        </div>
+      </div>
+      <!-- To use a real photo, replace this <svg> with: <img src="your-photo.jpg" alt="Portrait of John Lester Lerios"> -->
+      <div class="frame">
+        <div class="photo" role="img" aria-label="Illustration of a glowing jack-o'-lantern">
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <path d="M60 24c-3-8-1-14 6-18" stroke="#7dff9a" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M60 30C30 20 8 42 8 72s22 44 52 44 52-14 52-44S90 20 60 30z" fill="#ff8a1f"/>
+            <path d="M42 32c-14 12-18 50 0 82M78 32c14 12 18 50 0 82" stroke="#c9540a" stroke-width="3" fill="none"/>
+            <path d="M34 62l14 10-14 4zM86 62l-14 10 14 4zM60 78l-6 10h12zM38 94q22 16 44 0l-8-8-6 7-8-7-8 7-6-7z" fill="#1a0b02"/>
+          </svg>
+        </div>
+        <small>photo.jpg</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="view" id="v-about" hidden>
+    <p class="ps">cat about.txt</p>
+    <h2>Who <em>haunts</em> this site?</h2>
+    <div class="cols">
+      <div>
+        <p>Hi, I'm John Lester, but most people call me Lester. I build small websites with HTML, CSS and JavaScript, and I like turning what I learn into projects I can actually show people.</p>
+        <p>I make plenty of mistakes, fix them, and get a little better each time. This page is where I keep the work I'm proud of.</p>
+        <p class="ps">ls -l stats/</p>
+        <table class="ls" aria-label="Quick stats">
+          <tr><td>projects</td><td data-n="2">2</td></tr>
+          <tr><td>languages</td><td data-n="3">3</td></tr>
+          <tr><td>dedication</td><td>&infin;</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="ps">./skills --level</p>
+        <div class="skill"><div class="top"><span>HTML</span><span>80%</span></div><div class="track"><i style="--w:80%"></i></div></div>
+        <div class="skill"><div class="top"><span>CSS</span><span>70%</span></div><div class="track"><i style="--w:70%"></i></div></div>
+        <div class="skill"><div class="top"><span>JavaScript</span><span>60%</span></div><div class="track"><i style="--w:60%"></i></div></div>
+        <p class="note">Still leveling up. These bars will grow.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="view" id="v-projects" hidden>
+    <p class="ps">ls ./projects</p>
+    <h2>My <em>creations</em></h2>
+    <div class="chips" role="group" aria-label="Filter projects">
+      <button class="chip" type="button" data-f="all" aria-pressed="true">--all</button>
+      <button class="chip" type="button" data-f="done" aria-pressed="false">--done</button>
+      <button class="chip" type="button" data-f="soon" aria-pressed="false">--soon</button>
+    </div>
+    <div class="list">
+      <article class="proj" data-s="done">
+        <span class="path">projects/jquery/</span>
+        <span class="st">Completed</span>
+        <h3>JQuery</h3>
+        <p>A student profile page that reacts to clicks. Buttons change the title and hide or show the profile with jQuery effects, a dropdown prints the chosen course, and the table can highlight odd or even rows.</p>
+        <div class="tg"><span>HTML</span><span>CSS</span><span>jQuery</span></div>
+        <div class="cmds">
+          <a class="cmd hot" href="interactive-profile/index.html" target="_blank" rel="noopener">Open Project</a>
+          <button class="cmd" type="button" data-d="0">./details</button>
+        </div>
+      </article>
+      <article class="proj" data-s="done">
+        <span class="path">projects/student-profile/</span>
+        <span class="st">Completed</span>
+        <h3>Interactive Profile</h3>
+        <p>A student profile page with a course dropdown and a student list table. Buttons change the title and hide or show the profile with jQuery effects, and a double click shows a different message.</p>
+        <div class="tg"><span>HTML</span><span>CSS</span><span>jQuery</span></div>
+        <div class="cmds">
+          <a class="cmd hot" href="student-profile/index.html" target="_blank" rel="noopener">Open Project</a>
+          <button class="cmd" type="button" data-d="1">./details</button>
+        </div>
+      </article>
+      <article class="proj soon" data-s="soon">
+        <span class="path">projects/next-project/</span>
+        <span class="st soon">Coming soon</span>
+        <h3>Next Project Title</h3>
+        <p>Still rising from the grave. Replace this text with a short description of your next project.</p>
+        <div class="tg"><span>Tag</span><span>Tag</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="view" id="v-contact" hidden>
+    <p class="ps">mail --to lester</p>
+    <h2>Send a <em>raven</em></h2>
+    <div class="mailbox">
+      <p>Have a question or want to say hi? Send me an email.</p>
+      <span class="addr" id="mail">jlesterlerios07@gmail.com</span>
+      <div class="cmds">
+        <a class="cmd hot" href="mailto:jlesterlerios07@gmail.com">Send Email</a>
+        <button class="cmd" type="button" id="copy">Copy Email</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="status">
+    <span>&copy; John Lester Lerios. Built with HTML, CSS &amp; JavaScript.</span>
+    <span><b id="where">home.sh</b> &middot; jlesterlerios07@gmail.com</span>
+  </footer>
+</div>
+
+<div class="veil" id="veil" hidden>
+  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="dt">
+    <h3 id="dt"></h3>
+    <p id="dd"></p>
+    <div class="tg" id="dtags"></div>
+    <div class="cmds" style="margin-top:16px"><button class="cmd hot" type="button" id="close">Close</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" hidden>Email copied!</div>
+
+<script>
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* tab routing on the hash */
+  var views = ["home", "about", "projects", "contact"];
+  var names = { home: "home.sh", about: "about.txt", projects: "projects/", contact: "contact.md" };
+  function route() {
+    var h = (location.hash || "").slice(1);
+    if (views.indexOf(h) < 0) h = "home";
+    views.forEach(function (v) { $("#v-" + v).hidden = v !== h; });
+    $$(".tabs a").forEach(function (a) {
+      if (a.getAttribute("data-tab") === h) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    $("#where").textContent = names[h];
+  }
+  window.addEventListener("hashchange", function () { route(); window.scrollTo(0, 0); });
+  route();
+
+  /* typed role */
+  var roles = ["web developer", "CSS sorcerer", "bug exorcist", "pumpkin-carving coder"];
+  var el = $("#typed");
+  if (!reduce) {
+    var ri = 0, ci = roles[0].length, del = true;
+    (function tick() {
+      el.textContent = roles[ri].slice(0, ci);
+      var wait = del ? 45 : 90;
+      if (del) { ci--; if (ci < 0) { del = false; ri = (ri + 1) % roles.length; ci = 0; wait = 300; } }
+      else { ci++; if (ci > roles[ri].length) { del = true; ci = roles[ri].length; wait = 1600; } }
+      setTimeout(tick, wait);
+    })();
+  }
+
+  /* project filter */
+  $$(".chip").forEach(function (c) {
+    c.addEventListener("click", function () {
+      var f = c.getAttribute("data-f");
+      $$(".chip").forEach(function (x) { x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
+      $$(".proj").forEach(function (p) { p.hidden = !(f === "all" || p.getAttribute("data-s") === f); });
+    });
+  });
+
+  /* project details */
+  var info = [
+    { t: "JQuery", d: "Built to practice jQuery. Buttons change the title, hide and show the profile box, a course dropdown prints your choice, and two buttons color the odd or even rows of the table.", g: ["HTML", "CSS", "jQuery"] },
+    { t: "Interactive Profile", d: "Built to practice jQuery events and effects. Buttons change the title, hide and show the profile box, and a double click on the title button shows a different message.", g: ["HTML", "CSS", "jQuery"] }
+  ];
+  var veil = $("#veil"), lastBtn = null;
+  $$("[data-d]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var i = +b.getAttribute("data-d");
+      $("#dt").textContent = info[i].t;
+      $("#dd").textContent = info[i].d;
+      $("#dtags").innerHTML = info[i].g.map(function (x) { return "<span>" + x + "</span>"; }).join("");
+      veil.hidden = false; lastBtn = b; $("#close").focus();
+    });
+  });
+  function closeDlg() { veil.hidden = true; if (lastBtn) lastBtn.focus(); }
+  $("#close").addEventListener("click", closeDlg);
+  veil.addEventListener("click", function (e) { if (e.target === veil) closeDlg(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !veil.hidden) closeDlg(); });
+
+  /* copy email */
+  var toast = $("#toast"), tt;
+  function showToast(msg) { toast.textContent = msg; toast.hidden = false; clearTimeout(tt); tt = setTimeout(function () { toast.hidden = true; }, 1800); }
+  function selectMail() { var r = document.createRange(); r.selectNodeContents($("#mail")); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+  $("#copy").addEventListener("click", function () {
+    var txt = $("#mail").textContent;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(function () { showToast("Email copied!"); }, function () { selectMail(); showToast("Press Ctrl+C to copy"); });
+    } else { selectMail(); showToast("Press Ctrl+C to copy"); }
+  });
+})();
+</script>
+
+</body></html>
